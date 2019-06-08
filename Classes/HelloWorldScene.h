@@ -34,11 +34,24 @@ public:
 
     virtual bool init();
     
+	//関数の宣言
+	void update(float delta) override;
+
     // a selector callback
     void menuCloseCallback(cocos2d::Ref* pSender);
     
     // implement the "static create()" method manually
     CREATE_FUNC(HelloWorld);
+
+	//スプライト
+	cocos2d::Sprite* sprite;
+
+	float alpha;
+	float redAlpha;
+	float blueAlpha;
+
+	//どちらに移動中なのか
+	int state;
 };
 
 #endif // __HELLOWORLD_SCENE_H__

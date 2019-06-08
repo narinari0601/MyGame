@@ -117,9 +117,39 @@ bool HelloWorld::init()
     //}
 
 	//テクスチャファイル名を指定して、スプライトを作成
-	Sprite* sprite = Sprite::create("fire01.png");
+	sprite = Sprite::create("fire01.png");
 	//シーングラフにつなぐ
 	this->addChild(sprite);
+
+	//表示座標指定
+	sprite->setPosition(Vec2(1100.0f, 550.0f));
+	//回転角を指定
+	//sprite->setRotation(45.0f);
+	//拡縮を指定
+	sprite->setScale(0.5f, 0.5f);
+	//左右反転
+	//sprite->setFlippedX(true);
+	//上下反転
+	//sprite->setFlippedY(true);
+	//非表示にする
+	//sprite->setVisible(false);
+	//色合いを設定
+	//sprite->setColor(Color3B(128, 255, 255));
+	//不透明度を設定
+	//sprite->setOpacity(0x00);
+
+	//updateが呼び出されるようにする
+	this->scheduleUpdate();
+
+	//アンカーポイントを左上に
+	//sprite->setAnchorPoint(Vec2(0.0f, 1.0f));
+	//sprite->setRotation(30);
+
+	alpha = 255.0f;
+	redAlpha = 0.0f;
+	blueAlpha = 255.0f;
+
+	state = 0;
 
     return true;
 }
@@ -136,4 +166,96 @@ void HelloWorld::menuCloseCallback(Ref* pSender)
     //_eventDispatcher->dispatchEvent(&customEndEvent);
 
 
+}
+
+void HelloWorld::update(float delta)
+{
+	//ここに更新処理を書く
+	Vec2 pos;
+	pos = sprite->getPosition();
+	switch(state)
+	{
+    //左移動
+	case 0:
+		//pos = sprite->getPosition();
+		pos += Vec2(-5.0f, 0.0f);
+		//sprite->setPosition(pos);
+		if (pos.x <= 100)
+		{
+			state = 1;
+		}
+		break;
+
+	case 1:
+		//pos = sprite->getPosition();
+		pos += Vec2(0.0f, -5.0f);
+		//sprite->setPosition(pos);
+		if (pos.y <= 100)
+		{
+			state = 2;
+		}
+		break;
+	case 2:
+		//pos = sprite->getPosition();
+		pos += Vec2(5.0f, 0.0f);
+		//sprite->setPosition(pos);
+		if (pos.x >= 1100)
+		{
+			state = 3;
+		}
+		break;
+	default:
+		//pos = sprite->getPosition();
+		pos += Vec2(0.0f, 5.0f);
+		//sprite->setPosition(pos);
+		if (pos.y >= 550)
+		{
+			state = 0;
+		}
+		break;
+	}
+	sprite->setPosition(pos);
+
+	//スプライトの現在座標を取得
+	//Vec2 pos = sprite->getPosition();
+	////座標を移動させる
+	//pos += Vec2(-3.0f, 0.0f);
+	////移動後の座標を反映
+	//sprite->setPosition(pos);
+
+	//だんだん透明に
+	alpha -= 255.0f / 300.0f;
+	sprite->setOpacity(alpha);
+	/*if (alpha < 0)
+	{
+		alpha = 0;
+	}*/
+
+	
+
+	/*if (sprite->getPositionX() >= 1100 && sprite->getPositionY() < 550)
+	{
+		pos += Vec2(0.0f, 3.0f);
+	}
+
+	else if (sprite->getPositionY() < 130)
+	{
+		pos += Vec2(3.0f, 0.0f);
+	}
+
+	else if (sprite->getPositionX() < 100)
+	{
+		pos += Vec2(0, -3.0f);
+	}
+
+	else if (sprite->getPositionY() >= 550)
+	{
+		pos += Vec2(-3.0f, 0.0f);
+	}
+
+	sprite->setPosition(pos);*/
+
+	//redAlpha += 255.0f / 180.0f;
+	//blueAlpha -= 255.0f / 180.0f;
+	//sprite->setColor(Color3B(redAlpha, 0, blueAlpha));
 }
