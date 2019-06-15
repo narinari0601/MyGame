@@ -46,12 +46,20 @@ public:
 	//スプライト
 	cocos2d::Sprite* sprite;
 
+	cocos2d::Sprite* slimeSprite;
+	cocos2d::Sprite* catSprite;
+
 	float alpha;
 	float redAlpha;
 	float blueAlpha;
+	float slimeAlpha;
 
 	//どちらに移動中なのか
 	int state;
+	cocos2d::Vec2 velocity;
+	cocos2d::Rect catRect;
+	int catAnimeCount;
+	int animeCount;
 };
 
 #endif // __HELLOWORLD_SCENE_H__

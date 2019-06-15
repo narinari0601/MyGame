@@ -116,40 +116,70 @@ bool HelloWorld::init()
     //    this->addChild(sprite, 0);
     //}
 
+
+	alpha = 255.0f;
+	redAlpha = 0.0f;
+	blueAlpha = 255.0f;
+	slimeAlpha = 255.0f;
+
+
 	//テクスチャファイル名を指定して、スプライトを作成
 	sprite = Sprite::create("fire01.png");
+	//sprite = Sprite::create("sample06.png");
+
+	//新しい画像
+	slimeSprite = Sprite::create("slime01.png");
+	catSprite = Sprite::create("sample06.png");
+	
 	//シーングラフにつなぐ
 	this->addChild(sprite);
+	this->addChild(slimeSprite);
+	this->addChild(catSprite);
+
+	Vec2 spritePos = Vec2(1100.0f, 550.0f);
+	animeCount = 0;
+	catAnimeCount = 0;
+	catRect = Rect(0, 0, 32, 32);
 
 	//表示座標指定
-	sprite->setPosition(Vec2(1100.0f, 550.0f));
+	sprite->setPosition(spritePos); //visibleSize.widthで横幅、visibleSize.hightで縦幅
+	slimeSprite->setPosition(spritePos - Vec2(0, 60.0f));
+	catSprite->setPosition(visibleSize.width / 2, visibleSize.height / 2);
 	//回転角を指定
 	//sprite->setRotation(45.0f);
 	//拡縮を指定
 	sprite->setScale(0.5f, 0.5f);
+	catSprite->setScale(8.0f);
 	//左右反転
 	//sprite->setFlippedX(true);
 	//上下反転
 	//sprite->setFlippedY(true);
 	//非表示にする
-	//sprite->setVisible(false);
+	sprite->setVisible(false);
+	slimeSprite->setVisible(false);
 	//色合いを設定
 	//sprite->setColor(Color3B(128, 255, 255));
 	//不透明度を設定
 	//sprite->setOpacity(0x00);
+	slimeSprite->setOpacity(slimeAlpha);
+	//画像切り取り
+	catSprite->setTextureRect(catRect);
+
+	//アンチエイリアスをカット
+	catSprite->getTexture()->setAliasTexParameters();
 
 	//updateが呼び出されるようにする
 	this->scheduleUpdate();
 
-	//アンカーポイントを左上に
+	//アンカーポイントを設定(0～1)
 	//sprite->setAnchorPoint(Vec2(0.0f, 1.0f));
-	//sprite->setRotation(30);
+	//sprite->setRotation(45.0f);
 
-	alpha = 255.0f;
-	redAlpha = 0.0f;
-	blueAlpha = 255.0f;
+	
 
 	state = 0;
+
+	velocity = Vec2(-3.0f, 0.0f);
 
     return true;
 }
@@ -171,50 +201,44 @@ void HelloWorld::menuCloseCallback(Ref* pSender)
 void HelloWorld::update(float delta)
 {
 	//ここに更新処理を書く
-	Vec2 pos;
-	pos = sprite->getPosition();
-	switch(state)
-	{
-    //左移動
-	case 0:
-		//pos = sprite->getPosition();
-		pos += Vec2(-5.0f, 0.0f);
-		//sprite->setPosition(pos);
-		if (pos.x <= 100)
-		{
-			state = 1;
-		}
-		break;
 
-	case 1:
-		//pos = sprite->getPosition();
-		pos += Vec2(0.0f, -5.0f);
-		//sprite->setPosition(pos);
-		if (pos.y <= 100)
-		{
-			state = 2;
-		}
-		break;
-	case 2:
-		//pos = sprite->getPosition();
-		pos += Vec2(5.0f, 0.0f);
-		//sprite->setPosition(pos);
-		if (pos.x >= 1100)
-		{
-			state = 3;
-		}
-		break;
-	default:
-		//pos = sprite->getPosition();
-		pos += Vec2(0.0f, 5.0f);
-		//sprite->setPosition(pos);
-		if (pos.y >= 550)
-		{
-			state = 0;
-		}
-		break;
-	}
-	sprite->setPosition(pos);
+	//画面を回る
+	//Vec2 pos;
+	//pos = sprite->getPosition();
+	//switch(state)
+	//{
+    ////左移動
+	//case 0:
+	//	pos += Vec2(-5.0f, 0.0f);
+	//	if (pos.x <= 100)
+	//	{
+	//		state = 1;
+	//	}
+	//	break;
+
+	//case 1:
+	//	pos += Vec2(0.0f, -5.0f);
+	//	if (pos.y <= 100)
+	//	{
+	//		state = 2;
+	//	}
+	//	break;
+	//case 2:
+	//	pos += Vec2(5.0f, 0.0f);
+	//	if (pos.x >= 1100)
+	//	{
+	//		state = 3;
+	//	}
+	//	break;
+	//default:
+	//	pos += Vec2(0.0f, 5.0f);
+	//	if (pos.y >= 550)
+	//	{
+	//		state = 0;
+	//	}
+	//	break;
+	//}
+	//sprite->setPosition(pos);
 
 	//スプライトの現在座標を取得
 	//Vec2 pos = sprite->getPosition();
@@ -224,8 +248,8 @@ void HelloWorld::update(float delta)
 	//sprite->setPosition(pos);
 
 	//だんだん透明に
-	alpha -= 255.0f / 300.0f;
-	sprite->setOpacity(alpha);
+	//alpha -= 255.0f / 300.0f;
+	//sprite->setOpacity(alpha);
 	/*if (alpha < 0)
 	{
 		alpha = 0;
@@ -255,7 +279,83 @@ void HelloWorld::update(float delta)
 
 	sprite->setPosition(pos);*/
 
+
+	//赤から青に青から赤に
 	//redAlpha += 255.0f / 180.0f;
 	//blueAlpha -= 255.0f / 180.0f;
 	//sprite->setColor(Color3B(redAlpha, 0, blueAlpha));
+
+
+	//キャラのフェードインフェードアウト
+	/*alpha -= 1.0f;
+	if (alpha < 128)
+	{
+		slimeAlpha += 1.0f;
+
+		if (alpha < 0)
+		{
+			alpha = 0;
+		}
+	}
+	if (slimeAlpha > 255)
+	{
+		slimeAlpha = 255;
+	}
+	sprite->setOpacity(alpha);
+	slimeSprite->setOpacity(slimeAlpha);*/
+
+
+    //キャラが画面端で左右反転して移動
+    /*Vec2 pos = slimeSprite->getPosition();
+	if (state == 0)
+	{
+		slimeSprite->setFlippedX(false);
+	}
+	else
+	{
+		slimeSprite->setFlippedX(true);
+	}
+	if (pos.x < 0)
+	{
+		state = 2;
+		velocity *= -1.0f;
+	}
+	if (pos.x > 1280)
+	{
+		state = 0;
+		velocity *= -1.0f;
+	}
+	pos += velocity;
+	slimeSprite->setPosition(pos);*/
+
+    //アニメーション
+	if (animeCount > 10 * 3-1)
+	{
+		animeCount = 10 * 2;
+		state = 1;
+	}
+
+	else if (animeCount < 0)
+	{
+		animeCount = 10;
+		state = 0;
+	}
+	if (state == 0)
+	{
+		animeCount += 1;
+	}
+	else
+	{
+		animeCount -= 1;
+	}
+    
+	catAnimeCount = animeCount / 10;
+
+	if (catAnimeCount > 2)
+	{
+		catAnimeCount = 0;
+	}
+	catRect = Rect(catAnimeCount % 3 * 32, 0 * 32, 32, 32);
+	catSprite->setTextureRect(catRect);
+
 }
