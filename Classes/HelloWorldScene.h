@@ -44,10 +44,13 @@ public:
     CREATE_FUNC(HelloWorld);
 
 	//スプライト
-	cocos2d::Sprite* sprite;
+	//cocos2d::Sprite* sprite;
+	//cocos2d::Sprite* slimeSprite;
+	//cocos2d::Sprite* catSprite;
 
-	cocos2d::Sprite* slimeSprite;
-	cocos2d::Sprite* catSprite;
+	//Sprite配列
+	cocos2d::Sprite* sprite[100];
+
 
 	float alpha;
 	float redAlpha;
