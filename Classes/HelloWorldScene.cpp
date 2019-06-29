@@ -122,56 +122,62 @@ bool HelloWorld::init()
 	blueAlpha = 255.0f;
 	slimeAlpha = 255.0f;
 
-	//Vec2 spritePos = Vec2(1100.0f, 550.0f);
-	Vec2 spritePos = Vec2(visibleSize.width / 2, visibleSize.height / 2);
+	Vec2 spritePos = Vec2(1100.0f, 550.0f);
+	//Vec2 spritePos = Vec2(visibleSize.width / 2, visibleSize.height / 2);
 	animeCount = 0;
 	catAnimeCount = 0;
 	catRect = Rect(0, 0, 32, 32);
 
+	state = 0;
+	velocity = Vec2(-3.0f, 0.0f);
+
+
 	//乱数の初期化(C# : Random rnd = new Random() )
-	srand(time(nullptr));
+	//srand(time(nullptr));
 
 	//テクスチャファイル名を指定して、スプライトを作成
-	//sprite = Sprite::create("fire01.png");
+	//Sprite* sprite = Sprite::create("fire01.png");
 	//sprite = Sprite::create("sample06.png");
 
 	//画像(sprite)を追加
 	//slimeSprite = Sprite::create("slime01.png");
 	//catSprite = Sprite::create("sample06.png");
+	Sprite* sprite = Sprite::create("sample06.png");
 
 	//配列にfor文で追加
-	for (int i = 0; i < 50; i++)
-	{
-		sprite[i] = Sprite::create("fire01.png");
-		this->addChild(sprite[i]);
-		sprite[i]->setPosition(spritePos);
-		sprite[i]->setScale(0.3f, 0.3f);
+	//for (int i = 0; i < 50; i++)
+	//{
+	//	sprite[i] = Sprite::create("fire01.png");
+	//	this->addChild(sprite[i]);
+	//	sprite[i]->setPosition(spritePos);
+	//	sprite[i]->setScale(0.3f, 0.3f);
 
-		float mx, my;
+	//	float mx, my;
 
-		mx = (float)rand() / RAND_MAX * 1400 - 700;
-		my = (float)rand() / RAND_MAX * 1000 - 500;
+	//	mx = (float)rand() / RAND_MAX * 1400 - 700;
+	//	my = (float)rand() / RAND_MAX * 1000 - 500;
 
-		//MoveBy* action01 = MoveBy::create(2.0f, Vec2((i-2) * 250, 200));
-		MoveBy* action01 = MoveBy::create(2.0f, Vec2(mx, my));
-		sprite[i]->runAction(action01);
-	}
+	//	//MoveBy* action01 = MoveBy::create(2.0f, Vec2((i-2) * 250, 200));
+	//	MoveBy* action01 = MoveBy::create(2.0f, Vec2(mx, my));
+	//	sprite[i]->runAction(action01);
+	//}
 
 	//シーングラフにつなぐ
-	//this->addChild(sprite);
+	this->addChild(sprite);
 	//this->addChild(slimeSprite);
 	//this->addChild(catSprite);
 
 
 	//表示座標指定
-	//sprite->setPosition(spritePos); //visibleSize.widthで横幅、visibleSize.hightで縦幅
+	sprite->setPosition(spritePos); //visibleSize.widthで横幅、visibleSize.hightで縦幅
 	//slimeSprite->setPosition(spritePos - Vec2(0, 60.0f));
 	//catSprite->setPosition(visibleSize.width / 2, visibleSize.height / 2);
 	//回転角を指定
 	//sprite->setRotation(45.0f);
 	//拡縮を指定
-	//sprite->setScale(0.5f, 0.5f);
+	//sprite->setScale(0.4f, 0.4f);
 	//catSprite->setScale(8.0f);
+	sprite->setScale(8.0f);
 	//左右反転
 	//sprite->setFlippedX(true);
 	//上下反転
@@ -187,9 +193,11 @@ bool HelloWorld::init()
 	//slimeSprite->setOpacity(slimeAlpha);
 	//画像切り取り
 	//catSprite->setTextureRect(catRect);
+	sprite->setTextureRect(catRect);
 
 	//アンチエイリアスをカット
 	//catSprite->getTexture()->setAliasTexParameters();
+	sprite->getTexture()->setAliasTexParameters();
 
 	//updateが呼び出されるようにする
 	//this->scheduleUpdate();
@@ -274,7 +282,7 @@ bool HelloWorld::init()
 	//}
 
 
-    //5_やってみよう(3)
+	//5_やってみよう(3)
 	//for (int i = 0; i < 10; i++)
 	//{
 	//	sprite[i] = Sprite::create("fire01.png");
@@ -297,8 +305,8 @@ bool HelloWorld::init()
 	//}
 
 
-    //5_やってみよう(4)
-    //sprite[0] = Sprite::create("fire01.png");
+	//5_やってみよう(4)
+	//sprite[0] = Sprite::create("fire01.png");
 	//this->addChild(sprite[0]);
 	//sprite[0]->setPosition(Vec2(1100.0f, 550.0f));
 	//sprite[0]->setScale(0.3f, 0.3f);
@@ -308,12 +316,118 @@ bool HelloWorld::init()
 	//sprite[0]->runAction(action01);
 
 
-	state = 0;
+	//6.アクションの連携
+	//MoveTo* action01 = MoveTo::create(2.0f, Vec2(400.0f, 100.0f));
+	//JumpTo* action02 = JumpTo::create(1.0f, Vec2(200.0f, 200.0f), 300.0f, 2);
+	//Sequence* sequence01 = Sequence::create(action01, action02, nullptr);
+	//sprite->runAction(sequence01);
 
 
-	velocity = Vec2(-3.0f, 0.0f);
+	//MoveToのあとにTintToとJumpToを同時発動
+	//MoveTo* action01 = MoveTo::create(2.0f, Vec2(400.0f, 100.0f));
+	//JumpTo* action02 = JumpTo::create(1.0f, Vec2(200.0f, 200.0f), 300.0f, 2);
+	//TintTo* action03 = TintTo::create(2.0f, Color3B(0, 255, 0));
+	//Spawn* spawn01 = Spawn::create(action02, action03, nullptr);
+	//Sequence* sequence01 = Sequence::create(action01, spawn01, nullptr);
+	//sprite->runAction(sequence01);
+
+	//JumpBy* action01 = JumpBy::create(0.5f, Vec2(400.0f, 100.0f), 100.0f, 1);
+	//MoveBy* action02 = MoveBy::create(0.5f, Vec2(-400.0f, -100.0f));
+	//Sequence* sequence01 = Sequence::create(action01, action02, nullptr);
+	//Repeat* repeat01 = Repeat::create(action01, 3);
+	//Repeat* repeat01 = Repeat::create(sequence01, 3);
+	//RepeatForever* repeat01 = RepeatForever::create(sequence01);
+	//sprite->runAction(repeat01);
 
 
+	//JumpBy* action01 = JumpBy::create(0.5f, Vec2(400.0f, 100.0f), 100.0f, 1);
+	//DelayTime* delayTime01 = DelayTime::create(1.0f);
+	//MoveBy* action02 = MoveBy::create(0.5f, Vec2(-400.0f, -100.0f));
+	//Sequence* sequence01 = Sequence::create(action01, delayTime01, action02, nullptr);
+	//sprite->runAction(sequence01);
+
+	//JumpBy* action01 = JumpBy::create(0.5f, Vec2(400.0f, 100.0f), 100.0f, 1);
+	//ToggleVisibility* delayTime01 = ToggleVisibility::create();
+	//MoveBy* action02 = MoveBy::create(0.5f, Vec2(-400.0f, -100.0f));
+	//自身を削除するアクション。(必ず最後にやる)
+	//RemoveSelf* removeSelf01 = RemoveSelf::create();
+	//Sequence* sequence01 = Sequence::create(action01, delayTime01, action02, nullptr);
+	//Sequence* sequence01 = Sequence::create(action01, action02, removeSelf01, nullptr);
+	//Repeat* repeat01 = Repeat::create(sequence01, 6);
+	//sprite->runAction(sequence01);
+	//sprite->runAction(repeat01);
+
+	//6.やってみよう(1)
+	//MoveBy* action01 = MoveBy::create(5.0f, Vec2(-900.0f, 0.0f));
+	//MoveBy* action02 = MoveBy::create(5.0f, Vec2(900.0f, 0));
+	//Sequence* sequence01 = Sequence::create(action01, action02, nullptr);
+	//RepeatForever* repeatForever01 = RepeatForever::create(sequence01);
+	//sprite->runAction(repeatForever01);
+
+
+	//6.やってみよう(2)
+	//MoveBy* action01 = MoveBy::create(5.0f, Vec2(-900.0f, 0.0f));
+	//MoveBy* action02 = MoveBy::create(5.0f, Vec2(900.0f, 0));
+	//Sequence* sequence01 = Sequence::create(action01, action02, nullptr);
+	//sprite->setOpacity(0);
+	//FadeTo* action03 = FadeTo::create(5.0f, 255);
+	//FadeTo* action04 = FadeTo::create(5.0f, 0);
+	//Sequence* sequence02 = Sequence::create(action03, action04, nullptr);
+	//Spawn* spawn01 = Spawn::create(sequence01, sequence02, nullptr);
+	//sprite->runAction(spawn01);
+
+
+	//6.やってみよう(3)
+	//MoveBy* action01 = MoveBy::create(5.0f, Vec2(-900.0f, 0.0f));
+	//MoveBy* action02 = MoveBy::create(5.0f, Vec2(900.0f, 0));
+	//Sequence* sequence01 = Sequence::create(action01, action02, nullptr);
+	//sprite->setOpacity(0);
+	//FadeTo* action03 = FadeTo::create(5.0f, 255);
+	//FadeTo* action04 = FadeTo::create(5.0f, 0);
+	//Sequence* sequence02 = Sequence::create(action03, action04, nullptr);
+	//Spawn* spawn01 = Spawn::create(sequence01, sequence02, nullptr);
+	//Repeat* repear01 = Repeat::create(spawn01, 5);
+	//sprite->runAction(repear01);
+
+
+	//6.やってみよう(4)
+	//MoveBy* action01 = MoveBy::create(2.0f, Vec2(-900.0f, 0.0f));
+	//MoveBy* action02 = MoveBy::create(2.0f, Vec2(0.0f, -400.0f));
+	//MoveBy* action03 = MoveBy::create(2.0f, Vec2(900.0f, 0.0f));
+	//MoveBy* action04 = MoveBy::create(2.0f, Vec2(0.0f, 400.0f));
+	//Sequence* sequence01 = Sequence::create(action01, action02, action03, action04, nullptr);
+	//sprite->runAction(sequence01);
+
+
+	//6.やってみよう(5)
+	//MoveBy* action01 = MoveBy::create(1.0f, Vec2(-900.0f, 0.0f));
+	//MoveBy* action02 = MoveBy::create(0.5f, Vec2(0.0f, -400.0f));
+	//MoveBy* action03 = MoveBy::create(1.0f, Vec2(900.0f, 0.0f));
+	//MoveBy* action04 = MoveBy::create(0.5f, Vec2(0.0f, 400.0f));
+	//Sequence* sequence01 = Sequence::create(action01, action02, action03, action04, nullptr);
+	//RepeatForever* repeatForever01 = RepeatForever::create(sequence01);
+	//sprite->runAction(repeatForever01);
+
+    //おまけ
+	MoveBy* action01 = MoveBy::create(2.0f, Vec2(-900.0f, 0.0f));
+	MoveBy* action02 = MoveBy::create(1.0f, Vec2(0.0f, -400.0f));
+	MoveBy* action03 = MoveBy::create(2.0f, Vec2(900.0f, 0.0f));
+	MoveBy* action04 = MoveBy::create(1.0f, Vec2(0.0f, 400.0f));
+	ScaleTo* action05 = ScaleTo::create(1.0f, 8.0f);
+	ScaleTo* action06 = ScaleTo::create(1.0f, 3.0f);
+	RotateBy* action07 = RotateBy::create(1.0f, 360.0f * 1.0f);
+	RotateBy* action08 = RotateBy::create(1.0f, -180.0f * 1.0f);
+	Sequence* sequence01 = Sequence::create(action01, action02, action03, action04, nullptr);
+	//RepeatForever* repeatForever01 = RepeatForever::create(sequence01);
+	Sequence* sequence02 = Sequence::create(action05, action06, nullptr);
+	Sequence* sequence03 = Sequence::create(action07, action08, nullptr);
+	Spawn* spawn01 = Spawn::create(sequence02, sequence03, nullptr);
+	//Repeat* repeat01 = Repeat::create(spawn01, 1000);
+	RepeatForever* repeatForever01 = RepeatForever::create(sequence01);
+	RepeatForever* repeatForever02 = RepeatForever::create(spawn01);
+	//sprite->runAction(repeat01);
+	sprite->runAction(repeatForever01);
+	sprite->runAction(repeatForever02);
 
 
 	return true;

@@ -49,7 +49,7 @@ public:
 	//cocos2d::Sprite* catSprite;
 
 	//Sprite”z—ñ
-	cocos2d::Sprite* sprite[100];
+	//cocos2d::Sprite* sprite[100];
 
 
 	float alpha;
