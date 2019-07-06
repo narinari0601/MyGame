@@ -63,6 +63,12 @@ public:
 	cocos2d::Rect catRect;
 	int catAnimeCount;
 	int animeCount;
+
+
+	int audioID;
+
+	int counter = 60;
+
 };
 
 #endif // __HELLOWORLD_SCENE_H__

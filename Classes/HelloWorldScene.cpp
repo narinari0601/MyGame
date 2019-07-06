@@ -24,6 +24,7 @@
 
 #include "HelloWorldScene.h"
 #include "SimpleAudioEngine.h"
+#include "AudioEngine.h"
 
 USING_NS_CC;
 
@@ -136,13 +137,13 @@ bool HelloWorld::init()
 	//srand(time(nullptr));
 
 	//テクスチャファイル名を指定して、スプライトを作成
-	//Sprite* sprite = Sprite::create("fire01.png");
+	Sprite* sprite = Sprite::create("fire01.png");
 	//sprite = Sprite::create("sample06.png");
 
 	//画像(sprite)を追加
 	//slimeSprite = Sprite::create("slime01.png");
 	//catSprite = Sprite::create("sample06.png");
-	Sprite* sprite = Sprite::create("sample06.png");
+	//Sprite* sprite = Sprite::create("sample06.png");
 
 	//配列にfor文で追加
 	//for (int i = 0; i < 50; i++)
@@ -175,9 +176,9 @@ bool HelloWorld::init()
 	//回転角を指定
 	//sprite->setRotation(45.0f);
 	//拡縮を指定
-	//sprite->setScale(0.4f, 0.4f);
+	sprite->setScale(0.4f, 0.4f);
 	//catSprite->setScale(8.0f);
-	sprite->setScale(8.0f);
+	//sprite->setScale(8.0f);
 	//左右反転
 	//sprite->setFlippedX(true);
 	//上下反転
@@ -193,11 +194,11 @@ bool HelloWorld::init()
 	//slimeSprite->setOpacity(slimeAlpha);
 	//画像切り取り
 	//catSprite->setTextureRect(catRect);
-	sprite->setTextureRect(catRect);
+	//sprite->setTextureRect(catRect);
 
 	//アンチエイリアスをカット
 	//catSprite->getTexture()->setAliasTexParameters();
-	sprite->getTexture()->setAliasTexParameters();
+	//sprite->getTexture()->setAliasTexParameters();
 
 	//updateが呼び出されるようにする
 	//this->scheduleUpdate();
@@ -409,25 +410,32 @@ bool HelloWorld::init()
 	//sprite->runAction(repeatForever01);
 
     //おまけ
-	MoveBy* action01 = MoveBy::create(2.0f, Vec2(-900.0f, 0.0f));
-	MoveBy* action02 = MoveBy::create(1.0f, Vec2(0.0f, -400.0f));
-	MoveBy* action03 = MoveBy::create(2.0f, Vec2(900.0f, 0.0f));
-	MoveBy* action04 = MoveBy::create(1.0f, Vec2(0.0f, 400.0f));
-	ScaleTo* action05 = ScaleTo::create(1.0f, 8.0f);
-	ScaleTo* action06 = ScaleTo::create(1.0f, 3.0f);
-	RotateBy* action07 = RotateBy::create(1.0f, 360.0f * 1.0f);
-	RotateBy* action08 = RotateBy::create(1.0f, -180.0f * 1.0f);
-	Sequence* sequence01 = Sequence::create(action01, action02, action03, action04, nullptr);
+	//MoveBy* action01 = MoveBy::create(2.0f, Vec2(-900.0f, 0.0f));
+	//MoveBy* action02 = MoveBy::create(1.0f, Vec2(0.0f, -400.0f));
+	//MoveBy* action03 = MoveBy::create(2.0f, Vec2(900.0f, 0.0f));
+	//MoveBy* action04 = MoveBy::create(1.0f, Vec2(0.0f, 400.0f));
+	//ScaleTo* action05 = ScaleTo::create(1.0f, 8.0f);
+	//ScaleTo* action06 = ScaleTo::create(1.0f, 3.0f);
+	//RotateBy* action07 = RotateBy::create(1.0f, 360.0f * 1.0f);
+	//RotateBy* action08 = RotateBy::create(1.0f, -180.0f * 1.0f);
+	//Sequence* sequence01 = Sequence::create(action01, action02, action03, action04, nullptr);
+	////RepeatForever* repeatForever01 = RepeatForever::create(sequence01);
+	//Sequence* sequence02 = Sequence::create(action05, action06, nullptr);
+	//Sequence* sequence03 = Sequence::create(action07, action08, nullptr);
+	//Spawn* spawn01 = Spawn::create(sequence02, sequence03, nullptr);
+	////Repeat* repeat01 = Repeat::create(spawn01, 1000);
 	//RepeatForever* repeatForever01 = RepeatForever::create(sequence01);
-	Sequence* sequence02 = Sequence::create(action05, action06, nullptr);
-	Sequence* sequence03 = Sequence::create(action07, action08, nullptr);
-	Spawn* spawn01 = Spawn::create(sequence02, sequence03, nullptr);
-	//Repeat* repeat01 = Repeat::create(spawn01, 1000);
-	RepeatForever* repeatForever01 = RepeatForever::create(sequence01);
-	RepeatForever* repeatForever02 = RepeatForever::create(spawn01);
-	//sprite->runAction(repeat01);
-	sprite->runAction(repeatForever01);
-	sprite->runAction(repeatForever02);
+	//RepeatForever* repeatForever02 = RepeatForever::create(spawn01);
+	////sprite->runAction(repeat01);
+	//sprite->runAction(repeatForever01);
+	//sprite->runAction(repeatForever02);
+
+    //7.サウンド
+    //サウンドの再生
+    experimental::AudioEngine::play2d("katana-slash5.mp3");
+
+	//ループ再生
+	//experimental::AudioEngine::play2d("se_maoudamashii_system23.mp3", true);
 
 
 	return true;
@@ -607,4 +615,11 @@ void HelloWorld::update(float delta)
 	//catRect = Rect(catAnimeCount % 3 * 32, 0 * 32, 32, 32);
 	//catSprite->setTextureRect(catRect);
 
+
+    //全ての音を止める
+    //experimental::AudioEngine::stopAll();
+    //割り振られたオーディオIDを指定して一時停止
+    //experimental::AudioEngine::pause(audioID);
+	//割り振られたオーディオIDを指定して再開
+	//experimental::AudioEngine::resume(audioID);
 }
