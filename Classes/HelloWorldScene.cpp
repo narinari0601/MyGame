@@ -432,10 +432,23 @@ bool HelloWorld::init()
 
     //7.サウンド
     //サウンドの再生
-    experimental::AudioEngine::play2d("katana-slash5.mp3");
+    //experimental::AudioEngine::play2d("katana-slash5.mp3");
 
 	//ループ再生
 	//experimental::AudioEngine::play2d("se_maoudamashii_system23.mp3", true);
+
+
+    //8.関数を呼び出すAction
+    //関数呼び出しアクションの作成
+    //CallFunc* callFunc = CallFunc::create(CC_CALLBACK_0(HelloWorld::myFunction, this));
+    //CallFunc* callFunc = CallFunc::create(CC_CALLBACK_0(HelloWorld::myFunction02, this,"slime01.png"));
+    //CallFunc* callFunc = CallFunc::create(CC_CALLBACK_0(HelloWorld::myFunction03, this, 5));
+	//指定秒待機するアクション
+	//DelayTime* delay = DelayTime::create(1.0f);
+	//連続アクション
+	//Sequence* seq = Sequence::create(delay, callFunc, nullptr);
+
+	//this->runAction(seq);
 
 
 	return true;
@@ -622,4 +635,52 @@ void HelloWorld::update(float delta)
     //experimental::AudioEngine::pause(audioID);
 	//割り振られたオーディオIDを指定して再開
 	//experimental::AudioEngine::resume(audioID);
+}
+
+//任意の自作メンバ関数
+void HelloWorld::myFunction()
+{
+	//任意の処理
+
+	auto visibleSize = Director::getInstance()->getVisibleSize();
+
+	Sprite* spr = Sprite::create("slime01.png");
+	this->addChild(spr);
+	this->setPosition(Vec2(500, 500));
+}
+
+void HelloWorld::myFunction02(std::string fileName)
+{
+	//任意の処理
+	srand(time(nullptr));
+	auto visibleSize = Director::getInstance()->getVisibleSize();
+	float x = (float)rand() / RAND_MAX * 1000;
+	float y = (float)rand() / RAND_MAX * 1000 - 500;
+
+	Sprite* spr = Sprite::create(fileName);
+	this->addChild(spr);
+	this->setPosition(Vec2(x, y));
+}
+
+
+void HelloWorld::myFunction03(int count)
+{
+	//任意の処理
+
+	auto visibleSize = Director::getInstance()->getVisibleSize();
+
+	Sprite* spr = Sprite::create("slime01.png");
+	this->addChild(spr);
+	this->setPosition(Vec2(500, 500));
+
+	if (count > 0)
+	{
+		CallFunc* callFunc = CallFunc::create(CC_CALLBACK_0(HelloWorld::myFunction03, this, count - 1));
+
+		//指定秒待機するアクション
+		DelayTime* delay = DelayTime::create(1.0f);
+		//連続アクション
+		Sequence* seq = Sequence::create(delay, callFunc, nullptr);
+		this->runAction(seq);
+	}
 }

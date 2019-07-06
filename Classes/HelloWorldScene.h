@@ -37,6 +37,11 @@ public:
 	//ŠÖ”‚ÌéŒ¾
 	void update(float delta) override;
 
+	//©ìŠÖ”
+	void myFunction();
+	void myFunction02(std::string fileName);
+	void myFunction03(int count);
+
     // a selector callback
     void menuCloseCallback(cocos2d::Ref* pSender);
     
