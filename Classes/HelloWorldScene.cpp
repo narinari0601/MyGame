@@ -86,20 +86,20 @@ bool HelloWorld::init()
 	// add a label shows "Hello World"
 	// create and initialize a label
 
-	auto label = Label::createWithTTF("Hello World", "fonts/Marker Felt.ttf", 24);
-	if (label == nullptr)
-	{
-		problemLoading("'fonts/Marker Felt.ttf'");
-	}
-	else
-	{
-		// position the label on the center of the screen
-		label->setPosition(Vec2(origin.x + visibleSize.width / 2,
-			origin.y + visibleSize.height - label->getContentSize().height));
+	//auto label = Label::createWithTTF("Hello World", "fonts/Marker Felt.ttf", 24);
+	//if (label == nullptr)
+	//{
+	//	problemLoading("'fonts/Marker Felt.ttf'");
+	//}
+	//else
+	//{
+	//	// position the label on the center of the screen
+	//	label->setPosition(Vec2(origin.x + visibleSize.width / 2,
+	//		origin.y + visibleSize.height - label->getContentSize().height));
 
-		// add the label as a child to this layer
-		this->addChild(label, 1);
-	}
+	//	// add the label as a child to this layer
+	//	this->addChild(label, 1);
+	//}
 
 	//// add "HelloWorld" splash screen"
 	//auto sprite = Sprite::create("HelloWorld.png");
@@ -117,19 +117,19 @@ bool HelloWorld::init()
 	//}
 
 
-	alpha = 255.0f;
-	redAlpha = 0.0f;
-	blueAlpha = 255.0f;
-	slimeAlpha = 255.0f;
+	//alpha = 255.0f;
+	//redAlpha = 0.0f;
+	//blueAlpha = 255.0f;
+	//slimeAlpha = 255.0f;
 
-	Vec2 spritePos = Vec2(1100.0f, 550.0f);
+	//Vec2 spritePos = Vec2(1100.0f, 550.0f);
 	//Vec2 spritePos = Vec2(visibleSize.width / 2, visibleSize.height / 2);
-	animeCount = 0;
-	catAnimeCount = 0;
-	catRect = Rect(0, 0, 32, 32);
+	//animeCount = 0;
+	//catAnimeCount = 0;
+	//catRect = Rect(0, 0, 32, 32);
 
-	state = 0;
-	velocity = Vec2(-3.0f, 0.0f);
+	//state = 0;
+	//velocity = Vec2(-3.0f, 0.0f);
 
 
 	//乱数の初期化(C# : Random rnd = new Random() )
@@ -142,7 +142,10 @@ bool HelloWorld::init()
 	//画像(sprite)を追加
 	//slimeSprite = Sprite::create("slime01.png");
 	//catSprite = Sprite::create("sample06.png");
-	Sprite* sprite = Sprite::create("sample06.png");
+	//Sprite* sprite = Sprite::create("sample06.png");
+	kuppaDef = Sprite::create("kuppa00.png");
+	fieldDef = Sprite::create("field00.png");
+	floor_yoursDef = Sprite::create("floor_yours00.png");
 
 	//配列にfor文で追加
 	//for (int i = 0; i < 50; i++)
@@ -163,21 +166,29 @@ bool HelloWorld::init()
 	//}
 
 	//シーングラフにつなぐ
-	this->addChild(sprite);
+	//this->addChild(sprite);
 	//this->addChild(slimeSprite);
 	//this->addChild(catSprite);
+	
+	this->addChild(fieldDef);
+	this->addChild(floor_yoursDef);
+	this->addChild(kuppaDef);
 
 
 	//表示座標指定
-	sprite->setPosition(spritePos); //visibleSize.widthで横幅、visibleSize.hightで縦幅
+	//sprite->setPosition(spritePos); //visibleSize.widthで横幅、visibleSize.hightで縦幅
 	//slimeSprite->setPosition(spritePos - Vec2(0, 60.0f));
 	//catSprite->setPosition(visibleSize.width / 2, visibleSize.height / 2);
+	kuppaDef->setPosition(Vec2(-1280, 0));
+	fieldDef->setPosition(Vec2::ZERO);
+	floor_yoursDef->setPosition(Vec2(-1280, 0));
+
 	//回転角を指定
 	//sprite->setRotation(45.0f);
 	//拡縮を指定
 	//sprite->setScale(0.4f, 0.4f);
 	//catSprite->setScale(8.0f);
-	sprite->setScale(8.0f);
+	//sprite->setScale(8.0f);
 	//左右反転
 	//sprite->setFlippedX(true);
 	//上下反転
@@ -193,11 +204,11 @@ bool HelloWorld::init()
 	//slimeSprite->setOpacity(slimeAlpha);
 	//画像切り取り
 	//catSprite->setTextureRect(catRect);
-	sprite->setTextureRect(catRect);
+	//sprite->setTextureRect(catRect);
 
 	//アンチエイリアスをカット
 	//catSprite->getTexture()->setAliasTexParameters();
-	sprite->getTexture()->setAliasTexParameters();
+	//sprite->getTexture()->setAliasTexParameters();
 
 	//updateが呼び出されるようにする
 	//this->scheduleUpdate();
@@ -205,7 +216,9 @@ bool HelloWorld::init()
 	//アンカーポイントを設定(0～1)
 	//sprite->setAnchorPoint(Vec2(0.0f, 1.0f));
 	//sprite->setRotation(45.0f);
-
+	kuppaDef->setAnchorPoint(Vec2(0.0f, 0.0f));
+	fieldDef->setAnchorPoint(Vec2(0.0f, 0.0f));
+	floor_yoursDef->setAnchorPoint(Vec2(0.0f, 0.0f));
 
 	//アクションの作成
 	//MoveBy* action01 = MoveBy::create(2.0f, Vec2(500, 100));
@@ -224,6 +237,11 @@ bool HelloWorld::init()
 	//SkewTo* action06 = SkewTo::create(2.0f, 10.0f, 10.0f);
 	//sprite->setOpacity(0);
 	//FadeIn* action07 = FadeIn::create(2.0f);
+	MoveTo* kuppaMove01 = MoveTo::create(3.0f, Vec2::ZERO);
+	MoveTo* floor_yoursMove01 = MoveTo::create(3.0f, Vec2::ZERO);
+	kuppaDef->runAction(kuppaMove01);
+	floor_yoursDef->runAction(floor_yoursMove01);
+	//floor_yoursDef->runAction(kuppaMove01);
 
 	//ノードに対してアクションを実行
 	//sprite->runAction(action01);
@@ -408,26 +426,26 @@ bool HelloWorld::init()
 	//RepeatForever* repeatForever01 = RepeatForever::create(sequence01);
 	//sprite->runAction(repeatForever01);
 
-    //おまけ
-	MoveBy* action01 = MoveBy::create(2.0f, Vec2(-900.0f, 0.0f));
-	MoveBy* action02 = MoveBy::create(1.0f, Vec2(0.0f, -400.0f));
-	MoveBy* action03 = MoveBy::create(2.0f, Vec2(900.0f, 0.0f));
-	MoveBy* action04 = MoveBy::create(1.0f, Vec2(0.0f, 400.0f));
-	ScaleTo* action05 = ScaleTo::create(1.0f, 8.0f);
-	ScaleTo* action06 = ScaleTo::create(1.0f, 3.0f);
-	RotateBy* action07 = RotateBy::create(1.0f, 360.0f * 1.0f);
-	RotateBy* action08 = RotateBy::create(1.0f, -180.0f * 1.0f);
-	Sequence* sequence01 = Sequence::create(action01, action02, action03, action04, nullptr);
+ //   //おまけ
+	//MoveBy* action01 = MoveBy::create(2.0f, Vec2(-900.0f, 0.0f));
+	//MoveBy* action02 = MoveBy::create(1.0f, Vec2(0.0f, -400.0f));
+	//MoveBy* action03 = MoveBy::create(2.0f, Vec2(900.0f, 0.0f));
+	//MoveBy* action04 = MoveBy::create(1.0f, Vec2(0.0f, 400.0f));
+	//ScaleTo* action05 = ScaleTo::create(1.0f, 8.0f);
+	//ScaleTo* action06 = ScaleTo::create(1.0f, 3.0f);
+	//RotateBy* action07 = RotateBy::create(1.0f, 360.0f * 1.0f);
+	//RotateBy* action08 = RotateBy::create(1.0f, -180.0f * 1.0f);
+	//Sequence* sequence01 = Sequence::create(action01, action02, action03, action04, nullptr);
+	////RepeatForever* repeatForever01 = RepeatForever::create(sequence01);
+	//Sequence* sequence02 = Sequence::create(action05, action06, nullptr);
+	//Sequence* sequence03 = Sequence::create(action07, action08, nullptr);
+	//Spawn* spawn01 = Spawn::create(sequence02, sequence03, nullptr);
+	////Repeat* repeat01 = Repeat::create(spawn01, 1000);
 	//RepeatForever* repeatForever01 = RepeatForever::create(sequence01);
-	Sequence* sequence02 = Sequence::create(action05, action06, nullptr);
-	Sequence* sequence03 = Sequence::create(action07, action08, nullptr);
-	Spawn* spawn01 = Spawn::create(sequence02, sequence03, nullptr);
-	//Repeat* repeat01 = Repeat::create(spawn01, 1000);
-	RepeatForever* repeatForever01 = RepeatForever::create(sequence01);
-	RepeatForever* repeatForever02 = RepeatForever::create(spawn01);
-	//sprite->runAction(repeat01);
-	sprite->runAction(repeatForever01);
-	sprite->runAction(repeatForever02);
+	//RepeatForever* repeatForever02 = RepeatForever::create(spawn01);
+	////sprite->runAction(repeat01);
+	//sprite->runAction(repeatForever01);
+	//sprite->runAction(repeatForever02);
 
 
 	return true;

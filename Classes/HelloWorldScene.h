@@ -47,6 +47,9 @@ public:
 	//cocos2d::Sprite* sprite;
 	//cocos2d::Sprite* slimeSprite;
 	//cocos2d::Sprite* catSprite;
+	cocos2d::Sprite* kuppaDef;
+	cocos2d::Sprite* floor_yoursDef;
+	cocos2d::Sprite* fieldDef;
 
 	//Sprite”z—ñ
 	//cocos2d::Sprite* sprite[100];
