@@ -442,13 +442,13 @@ bool HelloWorld::init()
     //関数呼び出しアクションの作成
     //CallFunc* callFunc = CallFunc::create(CC_CALLBACK_0(HelloWorld::myFunction, this));
     //CallFunc* callFunc = CallFunc::create(CC_CALLBACK_0(HelloWorld::myFunction02, this,"slime01.png"));
-    //CallFunc* callFunc = CallFunc::create(CC_CALLBACK_0(HelloWorld::myFunction03, this, 5));
+    CallFunc* callFunc = CallFunc::create(CC_CALLBACK_0(HelloWorld::myFunction03, this, 5));
 	//指定秒待機するアクション
-	//DelayTime* delay = DelayTime::create(1.0f);
+	DelayTime* delay = DelayTime::create(1.0f);
 	//連続アクション
-	//Sequence* seq = Sequence::create(delay, callFunc, nullptr);
+	Sequence* seq = Sequence::create(delay, callFunc, nullptr);
 
-	//this->runAction(seq);
+	this->runAction(seq);
 
 
 	return true;
@@ -666,12 +666,14 @@ void HelloWorld::myFunction02(std::string fileName)
 void HelloWorld::myFunction03(int count)
 {
 	//任意の処理
-
+	srand(time(nullptr));
 	auto visibleSize = Director::getInstance()->getVisibleSize();
+	float x = (float)rand() / RAND_MAX * 1000;
+	float y = (float)rand() / RAND_MAX * 1000 - 500;
 
 	Sprite* spr = Sprite::create("slime01.png");
 	this->addChild(spr);
-	this->setPosition(Vec2(500, 500));
+	this->setPosition(Vec2(x, y));
 
 	if (count > 0)
 	{
