@@ -24,6 +24,9 @@
 
 #include "HelloWorldScene.h"
 #include "SimpleAudioEngine.h"
+#include "AudioEngine.h"
+
+using namespace std;
 
 USING_NS_CC;
 
@@ -143,9 +146,25 @@ bool HelloWorld::init()
 	//slimeSprite = Sprite::create("slime01.png");
 	//catSprite = Sprite::create("sample06.png");
 	//Sprite* sprite = Sprite::create("sample06.png");
+	marioDef = Sprite::create("mario00.png");
+	marioJump = Sprite::create("marioJump01.png");
 	kuppaDef = Sprite::create("kuppa00.png");
+	kuriboDef = Sprite::create("kuribo00.png");
 	fieldDef = Sprite::create("field00.png");
+	floor_mineDef = Sprite::create("floor_mine00.png");
 	floor_yoursDef = Sprite::create("floor_yours00.png");
+	messageWindowDef = Sprite::create("messageWindow00.png");
+	selectArrow = Sprite::create("arrow01.png");
+	commandSelect01 = Sprite::create("commandSelect01.png");
+	commandSelect02 = Sprite::create("commandSelect02.png");
+	textBattleStart01 = Sprite::create("text_battleStart.png");
+	textKuriboSummon01 = Sprite::create("text_kuribo01.png");
+	textKuriboEnd01 = Sprite::create("text_kuribo02.png");
+	textMarioAttack01 = Sprite::create("text_attack01.png");
+	textBattleEnd01 = Sprite::create("text_battleEnd.png");
+	textKuppaEnd01 = Sprite::create("text_endTalk.png");
+	ui_Mine = Sprite::create("UI_mine00.png");
+	ui_Yours = Sprite::create("UI_yoursDef.png");
 
 	//配列にfor文で追加
 	//for (int i = 0; i < 50; i++)
@@ -165,23 +184,81 @@ bool HelloWorld::init()
 	//	sprite[i]->runAction(action01);
 	//}
 
+	//アンカーポイントを左下に設定
+	marioDef->setAnchorPoint(Vec2::ZERO);
+	marioJump->setAnchorPoint(Vec2::ZERO);
+	kuppaDef->setAnchorPoint(Vec2::ZERO);
+	kuriboDef->setAnchorPoint(Vec2::ZERO);
+	fieldDef->setAnchorPoint(Vec2::ZERO);
+	messageWindowDef->setAnchorPoint(Vec2::ZERO);
+	selectArrow->setAnchorPoint(Vec2::ZERO);
+	floor_mineDef->setAnchorPoint(Vec2::ZERO);
+	floor_yoursDef->setAnchorPoint(Vec2::ZERO);
+	commandSelect01->setAnchorPoint(Vec2::ZERO);
+	commandSelect02->setAnchorPoint(Vec2::ZERO);
+	textBattleStart01->setAnchorPoint(Vec2::ZERO);
+	textKuriboSummon01->setAnchorPoint(Vec2::ZERO);
+	textKuriboEnd01->setAnchorPoint(Vec2::ZERO);
+	textMarioAttack01->setAnchorPoint(Vec2::ZERO);
+	textBattleEnd01->setAnchorPoint(Vec2::ZERO);
+	textKuppaEnd01->setAnchorPoint(Vec2::ZERO);
+	ui_Mine->setAnchorPoint(Vec2::ZERO);
+	ui_Yours->setAnchorPoint(Vec2::ZERO);
+
+
+
 	//シーングラフにつなぐ
-	//this->addChild(sprite);
-	//this->addChild(slimeSprite);
-	//this->addChild(catSprite);
-	
 	this->addChild(fieldDef);
+	this->addChild(floor_mineDef);
 	this->addChild(floor_yoursDef);
+	this->addChild(ui_Yours);
+	this->addChild(kuriboDef);
 	this->addChild(kuppaDef);
+	this->addChild(marioDef);
+	this->addChild(marioJump);
+	this->addChild(ui_Mine);
+	this->addChild(messageWindowDef);
+	this->addChild(textBattleStart01);
+	this->addChild(textKuriboSummon01);
+	this->addChild(textKuriboEnd01);
+	this->addChild(textMarioAttack01);
+	this->addChild(textBattleEnd01);
+	this->addChild(textKuppaEnd01);
+	this->addChild(commandSelect01);
+	this->addChild(commandSelect02);
+	this->addChild(selectArrow);
+	
+
+	//最初に非表示にする画像を非表示に
+	ui_Yours->setVisible(false);
+	//kuriboDef->setVisible(false);
+	marioJump->setVisible(false);
+	ui_Mine->setVisible(false);
+	textBattleStart01->setVisible(false);
+	textKuriboSummon01->setVisible(false);
+	textKuriboEnd01->setVisible(false);
+	textMarioAttack01->setVisible(false);
+	textBattleEnd01->setVisible(false);
+	textKuppaEnd01->setVisible(false);
+	commandSelect01->setVisible(false);
+	commandSelect02->setVisible(false);
+	selectArrow->setVisible(false);
+
+	experimental::AudioEngine::play2d("game_maoudamashii_2_boss07.mp3");
+	//experimental::AudioEngine::play2d("jump06.mp3");
 
 
-	//表示座標指定
+	//座標初期設定
 	//sprite->setPosition(spritePos); //visibleSize.widthで横幅、visibleSize.hightで縦幅
 	//slimeSprite->setPosition(spritePos - Vec2(0, 60.0f));
 	//catSprite->setPosition(visibleSize.width / 2, visibleSize.height / 2);
+	marioDef->setPosition(Vec2(1280, 0));
 	kuppaDef->setPosition(Vec2(-1280, 0));
 	fieldDef->setPosition(Vec2::ZERO);
+	floor_mineDef->setPosition(Vec2(1280, 0));
 	floor_yoursDef->setPosition(Vec2(-1280, 0));
+	messageWindowDef->setPosition(Vec2::ZERO);
+	kuriboDef->setPosition(Vec2(640, 0));
 
 	//回転角を指定
 	//sprite->setRotation(45.0f);
@@ -216,9 +293,9 @@ bool HelloWorld::init()
 	//アンカーポイントを設定(0～1)
 	//sprite->setAnchorPoint(Vec2(0.0f, 1.0f));
 	//sprite->setRotation(45.0f);
-	kuppaDef->setAnchorPoint(Vec2(0.0f, 0.0f));
-	fieldDef->setAnchorPoint(Vec2(0.0f, 0.0f));
-	floor_yoursDef->setAnchorPoint(Vec2(0.0f, 0.0f));
+	
+
+
 
 	//アクションの作成
 	//MoveBy* action01 = MoveBy::create(2.0f, Vec2(500, 100));
@@ -237,11 +314,86 @@ bool HelloWorld::init()
 	//SkewTo* action06 = SkewTo::create(2.0f, 10.0f, 10.0f);
 	//sprite->setOpacity(0);
 	//FadeIn* action07 = FadeIn::create(2.0f);
+	
+	
+	
+	
+
+	//CallFunc* kuppaDisActive = CallFunc::create(CC_CALLBACK_0(HelloWorld::SpriteDisActive, this, kuppaDef));
+	//CallFunc* kuriboActive = CallFunc::create(CC_CALLBACK_0(HelloWorld::SpriteActive, this, kuriboDef));
+
+	
+	//Spawn* spawn01 = Spawn::create(kuppaMove02, kuriboAction, nullptr);
+
+	//Sequence* kuppaSeq01 = Sequence::create(kuppaMove01, spawn01, nullptr);
+
+	//マリオ達が現れるアクション
+	MoveTo* marioMove01 = MoveTo::create(3.0f, Vec2::ZERO);
 	MoveTo* kuppaMove01 = MoveTo::create(3.0f, Vec2::ZERO);
+	MoveTo* floor_mineMove01 = MoveTo::create(3.0f, Vec2::ZERO);
 	MoveTo* floor_yoursMove01 = MoveTo::create(3.0f, Vec2::ZERO);
-	kuppaDef->runAction(kuppaMove01);
-	floor_yoursDef->runAction(floor_yoursMove01);
-	//floor_yoursDef->runAction(kuppaMove01);
+	Spawn* startMove = Spawn::create(
+		TargetedAction::create(marioDef, marioMove01),
+		TargetedAction::create(kuppaDef, kuppaMove01),
+		TargetedAction::create(floor_mineDef, floor_mineMove01),
+		TargetedAction::create(floor_yoursDef, floor_yoursMove01),
+		nullptr);
+
+
+	//クッパが勝負をしかけてきたテキスト表示アクション
+	CallFunc* textBattleStartActive = CallFunc::create(CC_CALLBACK_0(HelloWorld::SpriteActive, this, textBattleStart01));
+	DelayTime* startTextDelay = DelayTime::create(3.0f);
+	Sequence* startTextSeq = Sequence::create(textBattleStartActive, startTextDelay, nullptr);
+
+	//クッパがクリボーを繰り出すアクション
+	CallFunc* textBattleStartDisActive = CallFunc::create(CC_CALLBACK_0(HelloWorld::SpriteDisActive, this, textBattleStart01));
+	CallFunc* textKuriboSummmonActive = CallFunc::create(CC_CALLBACK_0(HelloWorld::SpriteActive, this, textKuriboSummon01));
+	MoveTo* kuppaMove02 = MoveTo::create(1.0f, Vec2(1280, 0));
+	MoveTo* kuriboMove01 = MoveTo::create(1.0f, Vec2::ZERO);
+	DelayTime* kuriboSummonDelay = DelayTime::create(2.0f);
+
+	Spawn* kuriboSummonSpa = Spawn::create(
+		TargetedAction::create(this, textBattleStartDisActive),
+		TargetedAction::create(this, textKuriboSummmonActive),
+		TargetedAction::create(kuppaDef, kuppaMove02),
+		TargetedAction::create(kuriboDef, kuriboMove01),
+		nullptr);
+	Sequence* kuriboSummon = Sequence::create(kuriboSummonSpa, kuriboSummonDelay, nullptr);
+
+	//マリオはどうする？アクション
+	CallFunc* textKuriboSummmonDisActive = CallFunc::create(CC_CALLBACK_0(HelloWorld::SpriteDisActive, this, textKuriboSummon01));
+	CallFunc* commandSelect01Active = CallFunc::create(CC_CALLBACK_0(HelloWorld::SpriteActive, this, commandSelect01));
+	CallFunc* selectArrowActive = CallFunc::create(CC_CALLBACK_0(HelloWorld::SpriteActive, this, selectArrow));
+	MoveBy* arrowMove01 = MoveBy::create(0.0f, Vec2(0, -70));
+	MoveBy* arrowMove02 = MoveBy::create(0.0f, Vec2(226, 0));
+	MoveBy* arrowMove03 = MoveBy::create(0.0f, Vec2(0, 70));
+	MoveTo* arrowMove04 = MoveTo::create(0.0f, Vec2::ZERO);
+	DelayTime* arrowActionDelay = DelayTime::create(1.5f);
+	Sequence* arrowAction = Sequence::create(arrowActionDelay,arrowMove01, arrowActionDelay, arrowMove02, arrowActionDelay, arrowMove03, arrowActionDelay, arrowMove04, nullptr);
+
+	Spawn* marioCommandSelect01 = Spawn::create(
+		TargetedAction::create(this, textKuriboSummmonDisActive),
+		TargetedAction::create(this, commandSelect01Active),
+		TargetedAction::create(this,selectArrowActive),
+		TargetedAction::create(selectArrow, arrowAction),
+		nullptr);
+
+
+	//marioDef->runAction(marioMove01);
+	//kuppaDef->runAction(kuppaMove01);
+	//kuppaDef->runAction(kuppaSeq01);
+	//floor_mineDef->runAction(floor_mineMove01);
+	//floor_yoursDef->runAction(floor_yoursMove01);
+	Sequence* allAction = Sequence::create(startMove, startTextSeq, kuriboSummon,marioCommandSelect01, nullptr);
+
+	this->runAction(allAction);
+	
+
+	//CallFunc* active01 = CallFunc::create(CC_CALLBACK_0(HelloWorld::SpriteActive, this, marioDef));
+	//this->runAction(active01);
+
+	//CallFunc* se01 = CallFunc::create(CC_CALLBACK_0(HelloWorld::PlaySE, this,"game_maoudamashii_2_boss07.mp3"));
+
 
 	//ノードに対してアクションを実行
 	//sprite->runAction(action01);
@@ -463,6 +615,21 @@ void HelloWorld::menuCloseCallback(Ref* pSender)
 	//_eventDispatcher->dispatchEvent(&customEndEvent);
 
 
+}
+
+void HelloWorld::SpriteActive(cocos2d::Sprite* sprite)
+{
+	sprite->setVisible(true);;
+}
+
+void HelloWorld::SpriteDisActive(cocos2d::Sprite* sprite)
+{
+	sprite->setVisible(false);
+}
+void HelloWorld::PlaySE(string* name)
+{
+	string str = *name;
+	experimental::AudioEngine::play2d(str);
 }
 
 void HelloWorld::update(float delta)
