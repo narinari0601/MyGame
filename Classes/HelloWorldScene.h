@@ -42,7 +42,9 @@ public:
 
 	void SpriteDisActive(cocos2d::Sprite* sprite);
 
-	void PlaySE(string* name);
+	void PlaySE(string name ,float volumu);
+
+	void LifeDamage();
 
     // a selector callback
     void menuCloseCallback(cocos2d::Ref* pSender);
@@ -51,9 +53,6 @@ public:
     CREATE_FUNC(HelloWorld);
 
 	//スプライト
-	//cocos2d::Sprite* sprite;
-	//cocos2d::Sprite* slimeSprite;
-	//cocos2d::Sprite* catSprite;
 	cocos2d::Sprite* marioDef;  //マリオのデフォ立ち絵
 	cocos2d::Sprite* marioJump;  //ジャンプしてるマリオ
 	cocos2d::Sprite* kuppaDef;  //クッパのデフォ
@@ -73,23 +72,15 @@ public:
 	cocos2d::Sprite* textKuppaEnd01;  //クッパの捨て台詞テキスト
 	cocos2d::Sprite* ui_Mine;  //自分のUI
 	cocos2d::Sprite* ui_Yours;  //相手のUI
+	cocos2d::Sprite* hp_red;
+	cocos2d::Sprite* hp_yellow;
+	cocos2d::Sprite* hp_green;
 
 
-	//Sprite配列
-	//cocos2d::Sprite* sprite[100];
+	cocos2d::Rect hpRect;
+	int hpLength;
+	bool damageFlag = false;
 
-
-	float alpha;
-	float redAlpha;
-	float blueAlpha;
-	float slimeAlpha;
-
-	//どちらに移動中なのか
-	int state;
-	cocos2d::Vec2 velocity;
-	cocos2d::Rect catRect;
-	int catAnimeCount;
-	int animeCount;
 };
 
 #endif // __HELLOWORLD_SCENE_H__
