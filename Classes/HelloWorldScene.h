@@ -41,6 +41,10 @@ public:
 	void myFunction();
 	void myFunction02(std::string fileName);
 	void myFunction03(int count);
+	bool onTouchBegan(cocos2d::Touch* touch, cocos2d::Event* unused_event);
+	void onTouchMoved(cocos2d::Touch* touch, cocos2d::Event* unused_event);
+	void onTouchEnded(cocos2d::Touch* touch, cocos2d::Event* unused_event);
+	void onTouchCancelled(cocos2d::Touch* touch, cocos2d::Event* unused_event);
 
     // a selector callback
     void menuCloseCallback(cocos2d::Ref* pSender);
@@ -49,7 +53,7 @@ public:
     CREATE_FUNC(HelloWorld);
 
 	//スプライト
-	//cocos2d::Sprite* sprite;
+	cocos2d::Sprite* sprite;
 	//cocos2d::Sprite* slimeSprite;
 	//cocos2d::Sprite* catSprite;
 
@@ -73,6 +77,9 @@ public:
 	int audioID;
 
 	int counter = 60;
+
+	cocos2d::Sprite* newSprite03;
+	cocos2d::MotionStreak*  m_pStreak;
 
 };
 

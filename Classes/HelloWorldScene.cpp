@@ -137,7 +137,7 @@ bool HelloWorld::init()
 	//srand(time(nullptr));
 
 	//テクスチャファイル名を指定して、スプライトを作成
-	Sprite* sprite = Sprite::create("fire01.png");
+	sprite = Sprite::create("fire01.png");
 	//sprite = Sprite::create("sample06.png");
 
 	//画像(sprite)を追加
@@ -438,17 +438,30 @@ bool HelloWorld::init()
 	//experimental::AudioEngine::play2d("se_maoudamashii_system23.mp3", true);
 
 
-    //8.関数を呼び出すAction
+    //8.関数を呼び出すAction (未完)
     //関数呼び出しアクションの作成
     //CallFunc* callFunc = CallFunc::create(CC_CALLBACK_0(HelloWorld::myFunction, this));
     //CallFunc* callFunc = CallFunc::create(CC_CALLBACK_0(HelloWorld::myFunction02, this,"slime01.png"));
-    CallFunc* callFunc = CallFunc::create(CC_CALLBACK_0(HelloWorld::myFunction03, this, 5));
-	//指定秒待機するアクション
-	DelayTime* delay = DelayTime::create(1.0f);
-	//連続アクション
-	Sequence* seq = Sequence::create(delay, callFunc, nullptr);
+    //CallFunc* callFunc = CallFunc::create(CC_CALLBACK_0(HelloWorld::myFunction03, this, 5));
+	////指定秒待機するアクション
+	//DelayTime* delay = DelayTime::create(1.0f);
+	////連続アクション
+	//Sequence* seq = Sequence::create(delay, callFunc, nullptr);
 
-	this->runAction(seq);
+	//this->runAction(seq);
+
+
+
+    //10.タッチ
+    //イベントリスナーを作成する
+    EventListenerTouchOneByOne* listener = EventListenerTouchOneByOne::create();
+	//イベントリスナーに各コールバック関数をセットする
+	listener->onTouchBegan = CC_CALLBACK_2(HelloWorld::onTouchBegan, this);
+	listener->onTouchMoved = CC_CALLBACK_2(HelloWorld::onTouchMoved, this);
+	listener->onTouchEnded = CC_CALLBACK_2(HelloWorld::onTouchEnded, this);
+	listener->onTouchCancelled = CC_CALLBACK_2(HelloWorld::onTouchCancelled, this);
+	//イベントリスナーを登録する
+	this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
 
 
 	return true;
@@ -467,6 +480,70 @@ void HelloWorld::menuCloseCallback(Ref* pSender)
 
 
 }
+
+//タッチ開始時に呼ばれる関数
+bool HelloWorld::onTouchBegan(Touch* touch, Event* unused_event)
+{
+	Vec2 touch_pos = touch->getLocation();
+
+	//sprite->setPosition(touch_pos);
+	
+	//10.やってみよう1
+	//Sprite* newSprite = Sprite::create("slime01.png");
+	//this->addChild(newSprite);
+	//newSprite->setPosition(touch_pos);
+
+	//10.やってみよう3
+	newSprite03 = Sprite::create("slime01.png");
+	this->addChild(newSprite03);
+	newSprite03->setPosition(touch_pos);
+
+	//モーションストリークを作成して、メンバ変数に保存
+	//フェード時間、表示が始まるための移動距離、画面のサイズ、色、画像ファイル
+	m_pStreak = MotionStreak::create(0.5f, 1.0f, 20.0f, Color3B(0xff, 0xff, 0xff), "slime01.png");
+	m_pStreak->setPosition(touch_pos);
+	this->addChild(m_pStreak);
+
+	return true;
+}
+
+//タッチから動かした時に呼ばれる関数
+void HelloWorld::onTouchMoved(Touch* touch, Event* unused_event)
+{
+	//10.やってみよう3
+	Vec2 touch_pos = touch->getLocation();
+	newSprite03->setPosition(touch_pos);
+
+	//Vec2 touch_pos = touch->getLocation();
+
+	m_pStreak->setPosition(touch_pos);
+}
+
+//タッチ修了時に呼ばれる関数
+void HelloWorld::onTouchEnded(Touch* touch, Event* unused_event)
+{
+	//10.やってみよう２
+	//Vec2 touch_pos = touch->getLocation();
+	//Sprite* newSprite = Sprite::create("slime01.png");
+	//this->addChild(newSprite);
+	//newSprite->setPosition(touch_pos);
+
+	//10.やってみよう4
+	newSprite03->removeFromParent();
+
+	if (m_pStreak != nullptr)
+	{
+		m_pStreak->removeFromParent();
+		m_pStreak = nullptr;
+	}
+}
+
+//タッチがキャンセルされたときに呼ばれる関数
+void HelloWorld::onTouchCancelled(Touch* touch, Event* unused_event)
+{
+
+}
+
 
 void HelloWorld::update(float delta)
 {
