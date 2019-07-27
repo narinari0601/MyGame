@@ -500,7 +500,7 @@ bool HelloWorld::onTouchBegan(Touch* touch, Event* unused_event)
 
 	//モーションストリークを作成して、メンバ変数に保存
 	//フェード時間、表示が始まるための移動距離、画面のサイズ、色、画像ファイル
-	m_pStreak = MotionStreak::create(0.5f, 1.0f, 20.0f, Color3B(0xff, 0xff, 0xff), "slime01.png");
+	m_pStreak = MotionStreak::create(0.5f, 1.0f, 100.0f, Color3B(0xff, 0xff, 0xff), "slime01.png");
 	m_pStreak->setPosition(touch_pos);
 	this->addChild(m_pStreak);
 
